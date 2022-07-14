@@ -13,6 +13,7 @@ export const REGISTER_USER_ERROR = "REGISTER_USER_ERROR";
 export const LOGIN_USER_OK = "LOGIN_USER_OK";
 export const LOGIN_USER_ERROR = "LOGIN_USER_ERROR";
 export const LOGOUT_USER = "LOGOUT_USER";
+export const CHANGE_IS_MEMBER = "CHANGE_IS_MEMBER";
 
 export const addUserToLocalStorage = ({ user, token }) => {
   localStorage.setItem("user", JSON.stringify(user));
@@ -28,6 +29,10 @@ export const changePage = (page) => async (dispatch) => {
   dispatch({ type: CHANGE_PAGE, payload: page });
 };
 
+export const changeIsMember = () => async (dispatch) => {
+  dispatch({ type: CHANGE_IS_MEMBER });
+};
+
 export const displayAlert = (alertType, alertText) => async (dispatch) => {
   dispatch({ type: DISPLAY_ALERT, payload: { alertType, alertText } });
   setTimeout(() => {
@@ -36,11 +41,11 @@ export const displayAlert = (alertType, alertText) => async (dispatch) => {
 };
 
 export const register = (newUser) => async (dispatch) => {
-  dispatch({ type: OPERATION_USER_BEGIN });
   try {
     const { data } = await api.register(newUser);
     const { user } = data;
     await dispatch({ type: REGISTER_USER_OK, payload: { user } });
+    await dispatch(changeIsMember());
     await dispatch(
       displayAlert(
         "success",
@@ -52,14 +57,13 @@ export const register = (newUser) => async (dispatch) => {
     await dispatch(
       displayAlert(
         "error",
-        "Failed to register user. Please provide all the required fields. Your email must be valid. Your password must have at least 5 characters and at least one letter and one number"
+        "Failed to register user. Please provide all the required fields. Your email must be valid and unique. Your password must have at least 5 characters and at least one letter and one number"
       )
     );
   }
 };
 
-export const login = (existingUser) => async (dispatch) => {
-  dispatch({ type: OPERATION_USER_BEGIN });
+export const login = (existingUser, history) => async (dispatch) => {
   try {
     const { data } = await api.login(existingUser);
     const { user, token } = data;
@@ -71,6 +75,7 @@ export const login = (existingUser) => async (dispatch) => {
         "You logged in successfully. Rerouting to the home page to see animals"
       )
     );
+    setTimeout(() => history.push("/"), 3000);
   } catch (error) {
     await dispatch({ type: LOGIN_USER_ERROR });
     await dispatch(
@@ -83,26 +88,15 @@ export const login = (existingUser) => async (dispatch) => {
 };
 
 export const logout = () => async (dispatch) => {
-  await dispatch({ type: LOGOUT_USER });
-  removeUserFromLocalStorage();
-};
-
-export const getAllAnimals = () => async (dispatch) => {
-  dispatch({ type: WAITING_TO_FETCH });
   try {
-    const { data } = await api.getAllAnimals();
-    dispatch({
-      type: GET_ALL_ANIMALS,
-      payload: {
-        items: data.items,
-        totalNumber: data.totalNumber,
-      },
-    });
-  } catch (error) {}
+    await dispatch({ type: LOGOUT_USER });
+    removeUserFromLocalStorage();
+  } catch (error) {
+    dispatch(displayAlert("error", "Failed to logout user. Try again later."));
+  }
 };
 
-export const getAnimalsByPage = (page) => async (dispatch) => {
-  dispatch({ type: WAITING_TO_FETCH });
+export const getAnimalsByPage = (page) => async (dispatch, getState) => {
   try {
     const { data } = await api.getAnimalsByPage(page);
     dispatch({
@@ -113,8 +107,16 @@ export const getAnimalsByPage = (page) => async (dispatch) => {
       },
     });
   } catch (error) {
-    dispatch(
-      displayAlert("error", "Unable to get animals.Please try again later.")
-    );
+    const token = getState().animals.token;
+    if (!token) {
+      dispatch(displayAlert("success", "Please login to see animals"));
+    } else {
+      dispatch(
+        displayAlert(
+          "error",
+          "Unable to present animals at the moment. Try again later"
+        )
+      );
+    }
   }
 };

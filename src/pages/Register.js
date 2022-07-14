@@ -6,24 +6,22 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { FaHome } from "react-icons/fa";
 import { BsFillArrowLeftSquareFill } from "react-icons/bs";
-// import { useHistory, Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
-import { login, register } from "../actionTypesAndCreators";
+import { login, register, changeIsMember } from "../actionTypesAndCreators";
 
-import { displayAlert } from "../actionTypesAndCreators";
-// import { register, login } from "../actionCreators/auth";
 // import AlertToDisplay from "../components/AlertToDisplay";
 
 const Register = () => {
-  //   const history = useHistory();
+  const history = useHistory();
   const dispatch = useDispatch();
-  //   const showAlert = useSelector((state) => state.jobs.showAlert);
+  const isMember = useSelector((state) => state.animals.isMember);
 
   const [userData, setUserData] = useState({
     email: "",
     username: "",
     password: "",
-    isMember: false,
+    // isMember: false,
   });
 
   const clearValues = () => {
@@ -34,9 +32,9 @@ const Register = () => {
     });
   };
 
-  const toggleMember = () => {
-    setUserData({ ...userData, isMember: !userData.isMember });
-  };
+  // const toggleMember = () => {
+  //   setUserData({ ...userData, isMember: !isMember });
+  // };
 
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -44,13 +42,13 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { username, email, password, isMember } = userData;
+    const { username, email, password } = userData;
 
     const currentUser = { email, username, password };
     if (!isMember) {
       dispatch(register(currentUser));
     } else {
-      dispatch(login({ email, password }));
+      dispatch(login({ email, password }, history));
     }
     clearValues();
   };
@@ -59,7 +57,7 @@ const Register = () => {
     <Paper
       variant="outlined"
       align="center"
-      sx={{ width: "30%", margin: "auto" }}
+      sx={{ width: "30%", margin: "10px auto" }}
     >
       <Paper
         component="form"
@@ -71,16 +69,16 @@ const Register = () => {
           overflow: "hidden",
         }}
         noValidate
-        autoComplete="off"
+        autoComplete="on"
         onSubmit={handleSubmit}
       >
-        <Button size="large">
+        <Button size="large" component={Link} to="/">
           <FaHome /> Go Back &nbsp; <BsFillArrowLeftSquareFill />
         </Button>
         <Typography variant="h6">
-          {userData.isMember ? "Login" : "Register"}
+          {isMember ? "Login Form" : "Register Form"}
         </Typography>
-        {!userData.isMember && (
+        {!isMember && (
           <TextField
             required
             id="outlined-required"
@@ -119,9 +117,9 @@ const Register = () => {
           Submit
         </Button>
         <Typography variant="body1">
-          {userData.isMember ? "Not a member jet?" : "Already a member?"}
-          <Button size="small" onClick={toggleMember}>
-            {userData.isMember ? "Register" : "Login"}
+          {isMember ? "Not a member jet?" : "Already a member?"}
+          <Button size="small" onClick={() => dispatch(changeIsMember())}>
+            {isMember ? "Register" : "Login"}
           </Button>
         </Typography>
       </Paper>

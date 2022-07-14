@@ -1,15 +1,14 @@
 import {
   DISPLAY_ALERT,
   CLEAR_ALERT,
-  WAITING_TO_FETCH,
   GET_ALL_ANIMALS,
   CHANGE_PAGE,
-  OPERATION_USER_BEGIN,
   REGISTER_USER_OK,
   REGISTER_USER_ERROR,
   LOGIN_USER_OK,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
+  CHANGE_IS_MEMBER,
 } from "../actionTypesAndCreators";
 
 const token = localStorage.getItem("token");
@@ -25,6 +24,7 @@ const initialState = {
   page: 1,
   animals: [],
   totalAnimals: 0,
+  isMember: false,
 };
 
 export default function animalReducer(state = initialState, action) {
@@ -43,18 +43,6 @@ export default function animalReducer(state = initialState, action) {
         showAlert: false,
         alertType: "",
         alertText: "",
-      };
-    }
-    case OPERATION_USER_BEGIN: {
-      return {
-        ...state,
-        isLoading: true,
-      };
-    }
-    case WAITING_TO_FETCH: {
-      return {
-        ...state,
-        isLoading: true,
       };
     }
     case REGISTER_USER_OK: {
@@ -81,13 +69,11 @@ export default function animalReducer(state = initialState, action) {
     case LOGIN_USER_ERROR: {
       return {
         ...state,
-        isLoading: false,
       };
     }
     case LOGOUT_USER: {
       return {
         ...state,
-        isLoading: false,
         user: null,
         token: null,
       };
@@ -104,6 +90,12 @@ export default function animalReducer(state = initialState, action) {
       return {
         ...state,
         page: action.payload,
+      };
+    }
+    case CHANGE_IS_MEMBER: {
+      return {
+        ...state,
+        isMember: !state.isMember,
       };
     }
     default: {

@@ -1,22 +1,20 @@
 import React, { useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
-// import { logout } from "../actionCreators/auth";
-// import { Link } from "react-router-dom";
+import { logout } from "../actionTypesAndCreators";
+import { Link } from "react-router-dom";
 
 export default function HeaderAppBar() {
-  //   const user = useSelector((state) => state.users.user);
-
-  //   const dispatch = useDispatch();
+  const user = useSelector((state) => state.animals.user);
+  const dispatch = useDispatch();
   const handleLogout = () => {
-    //if user
-    if (1 > 0) {
-      //   dispatch(logout());
+    if (user) {
+      dispatch(logout());
     } else return;
   };
   return (
@@ -28,14 +26,15 @@ export default function HeaderAppBar() {
           </Typography>
           <div>
             <Button
+              component={Link}
               to="/auth"
               color="inherit"
               size="large"
               variant="outlined"
               onClick={handleLogout}
             >
-              {/* <span>{user ? user.userName : ""}</span> &nbsp; */}
-              {true ? "Register/Login" : "Logout"}
+              <span>{user ? user?.username : ""}</span> &nbsp;
+              {!user ? "Register/Login" : "Logout"}
             </Button>
           </div>
         </Toolbar>
