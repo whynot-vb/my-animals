@@ -3,9 +3,21 @@ import { useSelector, useDispatch } from "react-redux";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import { GiHummingbird } from "react-icons/gi";
+import { BsGenderAmbiguous } from "react-icons/bs";
+import { GiLibertyWing } from "react-icons/gi";
+import { GiSittingDog } from "react-icons/gi";
+import { GiEnergyArrow } from "react-icons/gi";
+import { BsSpeedometer2 } from "react-icons/bs";
+import { GiLifeBar } from "react-icons/gi";
+import { GoGlobe } from "react-icons/go";
+import { IoMdColorPalette } from "react-icons/io";
+
+import dog from "../images/dog.jpg";
+import horse from "../images/horse.png";
+import bird from "../images/bird.png";
 
 const Animals = () => {
   const animals = useSelector((state) => state.animals.animals);
@@ -23,24 +35,45 @@ const Animals = () => {
               position: "relative",
             }}
           >
-            {/* <CardMedia
-              sx={{
-                height: 0,
-                paddingTop: "60%",
-                backgroundColor: "rgba(0, 0, 0, 0.3)",
-              }}
-              image={
-                animal.origin ||
-                "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
-              }
-              title={animal?.name}
-            /> */}
+            {animal?.type === "Dog" && (
+              <CardMedia
+                sx={{
+                  height: 0,
+                  paddingTop: "60%",
+                  backgroundColor: "rgba(0, 0, 0, 0.3)",
+                }}
+                image={dog}
+                title={animal?.name}
+              />
+            )}
+            {animal?.type === "Horse" && (
+              <CardMedia
+                sx={{
+                  height: 0,
+                  paddingTop: "60%",
+                  backgroundColor: "rgba(0, 0, 0, 0.3)",
+                }}
+                image={horse}
+                title={animal?.name}
+              />
+            )}
+            {animal?.type === "Bird" && (
+              <CardMedia
+                sx={{
+                  height: 0,
+                  paddingTop: "60%",
+                  backgroundColor: "rgba(0, 0, 0, 0.3)",
+                }}
+                image={bird}
+                title={animal?.name}
+              />
+            )}
 
             <Typography
               sx={{ padding: "0 16px" }}
               gutterBottom
-              variant="h4"
-              component="h4"
+              variant="h5"
+              component="h5"
             >
               {animal?.type}
             </Typography>
@@ -50,7 +83,7 @@ const Animals = () => {
               variant="h6"
               component="h6"
             >
-              Origin: {animal?.origin}
+              <GoGlobe /> Origin: {animal?.origin}
             </Typography>
             <Typography
               sx={{ padding: "0 16px" }}
@@ -58,7 +91,8 @@ const Animals = () => {
               variant="h6"
               component="h6"
             >
-              Expected to live: {animal?.averageLifeExpectancy} years
+              <GiLifeBar /> Expected to live: {animal?.averageLifeExpectancy}{" "}
+              years
             </Typography>
             <Typography
               sx={{ padding: "0 16px" }}
@@ -66,7 +100,7 @@ const Animals = () => {
               variant="h6"
               component="h6"
             >
-              Gender: {animal?.gender}
+              <BsGenderAmbiguous /> Gender: {animal?.gender}
             </Typography>
             {animal?.type === "Dog" && (
               <>
@@ -76,7 +110,7 @@ const Animals = () => {
                   variant="h6"
                   component="h6"
                 >
-                  Breed: {animal?.breed}
+                  <GiSittingDog /> Breed: {animal?.breed}
                 </Typography>
                 <Typography
                   sx={{ padding: "0 16px" }}
@@ -84,7 +118,7 @@ const Animals = () => {
                   variant="h6"
                   component="h6"
                 >
-                  Energy Level: {animal?.energyLevel}
+                  <GiEnergyArrow /> Energy Level: {animal?.energyLevel}
                 </Typography>
               </>
             )}
@@ -96,7 +130,7 @@ const Animals = () => {
                   variant="h6"
                   component="h6"
                 >
-                  Breed: {animal?.breed}
+                  <BsSpeedometer2 /> Maximum speed: {animal?.maxSpeed} km/h
                 </Typography>
                 <Typography
                   sx={{ padding: "0 16px" }}
@@ -104,7 +138,7 @@ const Animals = () => {
                   variant="h6"
                   component="h6"
                 >
-                  Energy Level: {animal?.energyLevel}
+                  <IoMdColorPalette /> Color: {animal?.color}
                 </Typography>
               </>
             )}
@@ -116,7 +150,8 @@ const Animals = () => {
                   variant="h6"
                   component="h6"
                 >
-                  Breed: {animal?.breed}
+                  <GiHummingbird /> Flying:{" "}
+                  {animal?.flying === true ? "Yes" : "No"}
                 </Typography>
                 <Typography
                   sx={{ padding: "0 16px" }}
@@ -124,7 +159,7 @@ const Animals = () => {
                   variant="h6"
                   component="h6"
                 >
-                  Energy Level: {animal?.energyLevel}
+                  <GiLibertyWing /> Wing span: {animal?.wingSpan} cm
                 </Typography>
               </>
             )}

@@ -24,14 +24,37 @@ export const removeUserFromLocalStorage = () => {
   localStorage.removeItem("user");
 };
 
+export const changePage = (page) => async (dispatch) => {
+  dispatch({ type: CHANGE_PAGE, payload: page });
+};
+
+export const displayAlert = (alertType, alertText) => async (dispatch) => {
+  dispatch({ type: DISPLAY_ALERT, payload: { alertType, alertText } });
+  setTimeout(() => {
+    dispatch({ type: CLEAR_ALERT });
+  }, 4000);
+};
+
 export const register = (newUser) => async (dispatch) => {
   dispatch({ type: OPERATION_USER_BEGIN });
   try {
     const { data } = await api.register(newUser);
     const { user } = data;
-    dispatch({ type: REGISTER_USER_OK, payload: { user } });
+    await dispatch({ type: REGISTER_USER_OK, payload: { user } });
+    await dispatch(
+      displayAlert(
+        "success",
+        "You successfully registered. Now please log in with your account to see animals"
+      )
+    );
   } catch (error) {
-    dispatch({ type: REGISTER_USER_ERROR });
+    await dispatch({ type: REGISTER_USER_ERROR });
+    await dispatch(
+      displayAlert(
+        "error",
+        "Failed to register user. Please provide all the required fields. Your email must be valid. Your password must have at least 5 characters and at least one letter and one number"
+      )
+    );
   }
 };
 
@@ -40,17 +63,22 @@ export const login = (existingUser) => async (dispatch) => {
   try {
     const { data } = await api.login(existingUser);
     const { user, token } = data;
-    dispatch({ type: LOGIN_USER_OK, payload: { user, token } });
+    await dispatch({ type: LOGIN_USER_OK, payload: { user, token } });
     addUserToLocalStorage({ user, token });
-    // dispatch(
-    //   displayAlert(
-    //     "success",
-    //     "You logged in successfully. Rerouting to the home page."
-    //   )
-    // );
+    await dispatch(
+      displayAlert(
+        "success",
+        "You logged in successfully. Rerouting to the home page to see animals"
+      )
+    );
   } catch (error) {
-    dispatch({ type: LOGIN_USER_ERROR });
-    // dispatch(displayAlert("error", "Failed to login user"));
+    await dispatch({ type: LOGIN_USER_ERROR });
+    await dispatch(
+      displayAlert(
+        "error",
+        "Failed to login user. Your email or password is incorrect."
+      )
+    );
   }
 };
 
@@ -71,4 +99,22 @@ export const getAllAnimals = () => async (dispatch) => {
       },
     });
   } catch (error) {}
+};
+
+export const getAnimalsByPage = (page) => async (dispatch) => {
+  dispatch({ type: WAITING_TO_FETCH });
+  try {
+    const { data } = await api.getAnimalsByPage(page);
+    dispatch({
+      type: GET_ALL_ANIMALS,
+      payload: {
+        items: data.items,
+        totalNumber: data.totalNumber,
+      },
+    });
+  } catch (error) {
+    dispatch(
+      displayAlert("error", "Unable to get animals.Please try again later.")
+    );
+  }
 };

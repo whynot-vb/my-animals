@@ -41,8 +41,8 @@ export default function HeaderAppBar() {
         </Toolbar>
         <div>
           {true && (
-            <Typography variant="h5">
-              Please login to see all animals displayed on the screen
+            <Typography variant="h4">
+              Please log in to see all animals displayed on the screen.
             </Typography>
           )}
         </div>

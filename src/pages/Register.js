@@ -10,7 +10,7 @@ import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 
 import { login, register } from "../actionTypesAndCreators";
 
-// import { displayAlert } from "../actionCreators/job";
+import { displayAlert } from "../actionTypesAndCreators";
 // import { register, login } from "../actionCreators/auth";
 // import AlertToDisplay from "../components/AlertToDisplay";
 
@@ -45,14 +45,9 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const { username, email, password, isMember } = userData;
-    console.log(userData);
-    if (!email || !password || (!isMember && !username)) {
-      console.log("error ");
-    }
+
     const currentUser = { email, username, password };
-    console.log(currentUser);
     if (!isMember) {
-      console.log("Not a member");
       dispatch(register(currentUser));
     } else {
       dispatch(login({ email, password }));
@@ -60,15 +55,12 @@ const Register = () => {
     clearValues();
   };
 
-  useEffect(() => {});
-
   return (
     <Paper
       variant="outlined"
       align="center"
       sx={{ width: "30%", margin: "auto" }}
     >
-      {/* {showAlert && <AlertToDisplay />} */}
       <Paper
         component="form"
         sx={{

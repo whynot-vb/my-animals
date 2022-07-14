@@ -37,6 +37,14 @@ export default function animalReducer(state = initialState, action) {
         alertText: action.payload.alertText,
       };
     }
+    case CLEAR_ALERT: {
+      return {
+        ...state,
+        showAlert: false,
+        alertType: "",
+        alertText: "",
+      };
+    }
     case OPERATION_USER_BEGIN: {
       return {
         ...state,
@@ -90,6 +98,12 @@ export default function animalReducer(state = initialState, action) {
         isLoading: false,
         animals: action.payload.items,
         totalAnimals: action.payload.totalNumber,
+      };
+    }
+    case CHANGE_PAGE: {
+      return {
+        ...state,
+        page: action.payload,
       };
     }
     default: {
