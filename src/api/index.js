@@ -13,7 +13,7 @@ API.interceptors.request.use((req) => {
 });
 
 export const getAllAnimals = () => API.get("/animals");
-export const getAnimalsByPage = (page) => API.get(`/images?page=${page}`);
+export const getAnimalsByPage = (page) => API.get(`/animals?page=${page}`);
 
 export const register = (newUser) => API.post("/auth/register", newUser);
 export const login = (existingUser) => API.post("/auth/login", existingUser);

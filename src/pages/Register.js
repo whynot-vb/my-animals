@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
@@ -8,29 +8,29 @@ import { FaHome } from "react-icons/fa";
 import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 // import { useHistory, Link } from "react-router-dom";
 
+import { login, register } from "../actionTypesAndCreators";
+
 // import { displayAlert } from "../actionCreators/job";
 // import { register, login } from "../actionCreators/auth";
 // import AlertToDisplay from "../components/AlertToDisplay";
 
 const Register = () => {
   //   const history = useHistory();
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   //   const showAlert = useSelector((state) => state.jobs.showAlert);
 
   const [userData, setUserData] = useState({
-    userName: "",
     email: "",
+    username: "",
     password: "",
-    location: "",
     isMember: false,
   });
 
   const clearValues = () => {
     setUserData({
-      userName: "",
       email: "",
+      username: "",
       password: "",
-      location: "",
     });
   };
 
@@ -44,14 +44,18 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { userName, email, password, location, isMember } = userData;
-    if (!email || !password || (!isMember && !userName)) {
+    const { username, email, password, isMember } = userData;
+    console.log(userData);
+    if (!email || !password || (!isMember && !username)) {
+      console.log("error ");
     }
-    const currentUser = { userName, location, email, password };
+    const currentUser = { email, username, password };
+    console.log(currentUser);
     if (!isMember) {
-      //   dispatch(register(currentUser, history));
+      console.log("Not a member");
+      dispatch(register(currentUser));
     } else {
-      //   dispatch(login(currentUser, history));
+      dispatch(login({ email, password }));
     }
     clearValues();
   };
@@ -90,8 +94,8 @@ const Register = () => {
             id="outlined-required"
             label="Username"
             type="text"
-            name="userName"
-            value={userData.userName}
+            name="username"
+            value={userData.username}
             onChange={handleChange}
           />
         )}
