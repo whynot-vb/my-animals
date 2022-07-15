@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -24,7 +24,12 @@ const Animals = () => {
   return (
     <Grid container alignItems="stretch" spacing={2} sx={{ marginTop: "20px" }}>
       {animals?.map((animal) => (
-        <Grid item key={animal._id} xs={6} sm={3}>
+        <Grid
+          item
+          key={`${animal?.type}${animal?.origin}${animal?.averageLifeExpectancy}${animal?.gender}${animal?.energyLevel}${animal?.breed}${animal?.maxSpeed}${animal?.wingSpan}`}
+          xs={6}
+          sm={3}
+        >
           <Card
             sx={{
               display: "flex",
@@ -43,7 +48,7 @@ const Animals = () => {
                   backgroundColor: "rgba(0, 0, 0, 0.3)",
                 }}
                 image={dog}
-                title={animal?.name}
+                title={animal?.type}
               />
             )}
             {animal?.type === "Horse" && (
@@ -54,7 +59,7 @@ const Animals = () => {
                   backgroundColor: "rgba(0, 0, 0, 0.3)",
                 }}
                 image={horse}
-                title={animal?.name}
+                title={animal?.type}
               />
             )}
             {animal?.type === "Bird" && (
@@ -65,7 +70,7 @@ const Animals = () => {
                   backgroundColor: "rgba(0, 0, 0, 0.3)",
                 }}
                 image={bird}
-                title={animal?.name}
+                title={animal?.type}
               />
             )}
 

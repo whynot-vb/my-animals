@@ -3,11 +3,9 @@ import * as api from "../api";
 export const DISPLAY_ALERT = "DISPLAY_ALERT";
 export const CLEAR_ALERT = "CLEAR_ALERT";
 
-export const WAITING_TO_FETCH = "WAITING_TO_FETCH";
 export const GET_ALL_ANIMALS = "GET_ALL_ANIMALS";
 export const CHANGE_PAGE = "CHANGE_PAGE";
 
-export const OPERATION_USER_BEGIN = "OPERATION_USER_BEGIN";
 export const REGISTER_USER_OK = "REGISTER_USER_OK";
 export const REGISTER_USER_ERROR = "REGISTER_USER_ERROR";
 export const LOGIN_USER_OK = "LOGIN_USER_OK";
@@ -37,7 +35,7 @@ export const displayAlert = (alertType, alertText) => async (dispatch) => {
   dispatch({ type: DISPLAY_ALERT, payload: { alertType, alertText } });
   setTimeout(() => {
     dispatch({ type: CLEAR_ALERT });
-  }, 4000);
+  }, 3000);
 };
 
 export const register = (newUser) => async (dispatch) => {
@@ -45,7 +43,6 @@ export const register = (newUser) => async (dispatch) => {
     const { data } = await api.register(newUser);
     const { user } = data;
     await dispatch({ type: REGISTER_USER_OK, payload: { user } });
-    await dispatch(changeIsMember());
     await dispatch(
       displayAlert(
         "success",
@@ -96,7 +93,7 @@ export const logout = () => async (dispatch) => {
   }
 };
 
-export const getAnimalsByPage = (page) => async (dispatch, getState) => {
+export const getAnimalsByPage = (page, history) => async (dispatch) => {
   try {
     const { data } = await api.getAnimalsByPage(page);
     dispatch({
@@ -107,7 +104,7 @@ export const getAnimalsByPage = (page) => async (dispatch, getState) => {
       },
     });
   } catch (error) {
-    const token = getState().animals.token;
+    const token = localStorage.getItem("token");
     if (!token) {
       dispatch(displayAlert("success", "Please login to see animals"));
     } else {

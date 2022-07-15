@@ -8,11 +8,9 @@ API.interceptors.request.use((req) => {
   if (localStorage.getItem("token")) {
     req.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
   }
-
   return req;
 });
 
-export const getAllAnimals = () => API.get("/animals");
 export const getAnimalsByPage = (page) => API.get(`/animals?page=${page}`);
 
 export const register = (newUser) => API.post("/auth/register", newUser);

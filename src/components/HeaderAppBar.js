@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -39,9 +39,9 @@ export default function HeaderAppBar() {
           </div>
         </Toolbar>
         <div>
-          {true && (
+          {!user && (
             <Typography variant="h4">
-              Please log in to see all animals displayed on the screen.
+              Please login to see all animals displayed on the screen.
             </Typography>
           )}
         </div>

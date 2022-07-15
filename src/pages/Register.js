@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -10,8 +10,7 @@ import { useHistory, Link } from "react-router-dom";
 
 import { login, register, changeIsMember } from "../actionTypesAndCreators";
 
-// import AlertToDisplay from "../components/AlertToDisplay";
-
+//form for login and register
 const Register = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -21,7 +20,6 @@ const Register = () => {
     email: "",
     username: "",
     password: "",
-    // isMember: false,
   });
 
   const clearValues = () => {
@@ -31,10 +29,6 @@ const Register = () => {
       password: "",
     });
   };
-
-  // const toggleMember = () => {
-  //   setUserData({ ...userData, isMember: !isMember });
-  // };
 
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });

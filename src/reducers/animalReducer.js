@@ -15,7 +15,6 @@ const token = localStorage.getItem("token");
 const user = localStorage.getItem("user");
 
 const initialState = {
-  isLoading: false,
   user: user ? JSON.parse(user) : null,
   token: token,
   showAlert: false,
@@ -45,25 +44,25 @@ export default function animalReducer(state = initialState, action) {
         alertText: "",
       };
     }
+
     case REGISTER_USER_OK: {
       return {
         ...state,
-        isLoading: false,
         user: action.payload.user,
+        isMember: !state.isMember,
       };
     }
     case REGISTER_USER_ERROR: {
       return {
         ...state,
-        isLoading: false,
       };
     }
     case LOGIN_USER_OK: {
       return {
         ...state,
-        isLoading: false,
         user: action.payload.user,
         token: action.payload.token,
+        page: 1,
       };
     }
     case LOGIN_USER_ERROR: {
@@ -76,12 +75,13 @@ export default function animalReducer(state = initialState, action) {
         ...state,
         user: null,
         token: null,
+        isMember: true,
+        animals: [],
       };
     }
     case GET_ALL_ANIMALS: {
       return {
         ...state,
-        isLoading: false,
         animals: action.payload.items,
         totalAnimals: action.payload.totalNumber,
       };
