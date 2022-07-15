@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/my-animals/static/css/main.5b94e9c7.css",
+    "main.js": "/my-animals/static/js/main.b9c70fd2.js",
+    "static/media/horse.png": "/my-animals/static/media/horse.97af69c2b59824023562.png",
+    "static/media/dog.jpg": "/my-animals/static/media/dog.8f229f137a48b75a8576.jpg",
+    "static/media/error-404.webp": "/my-animals/static/media/error-404.76f174c5fd3ea6ca4faf.webp",
+    "static/media/bird.png": "/my-animals/static/media/bird.44e5837fcad9ec0752cb.png",
+    "index.html": "/my-animals/index.html",
+    "main.5b94e9c7.css.map": "/my-animals/static/css/main.5b94e9c7.css.map",
+    "main.b9c70fd2.js.map": "/my-animals/static/js/main.b9c70fd2.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5b94e9c7.css",
+    "static/js/main.b9c70fd2.js"
+  ]
+}
